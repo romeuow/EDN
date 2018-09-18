@@ -5,24 +5,28 @@ import math
 
 class OneStepClass:
 
-	def solver(self, method, f, exact, y0=(1+math.sqrt(0.001)), t0=0, t=4, n=4, Eh=0.0005):
-		if not callable(f):
-			raise TypeError('f is %s, not a function' % type(f))
+	def solver(self, problem, method, f, exact):
 		if not callable(method):
 			raise TypeError('method is %s, not a function' % type(method))
+		if not callable(f):
+			raise TypeError('f is %s, not a function' % type(f))
+		if not callable(exact):
+			raise TypeError('exact is %s, not a function' % type(exact))
 		
-		t,y = method(f, t0, y0, t, n)
+		t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
 		yExact = exact(t)
 
-		while abs(yExact - y) > Eh:
-			n *= 2
-			t,y = method(f, t0, y0, t, n)
+		while np.max(abs(yExact - y)) > problem.Eh:
+			problem.n *= 2
+			t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
 			yExact = exact(t)
 
+		h = float((problem.t-problem.t0)/problem.n)
+		return t, y, problem.n, h
 		
 
 
-	def ForwardEuler(self, f, t0, y0, T, n=1, dt=-1):
+	def ForwardEuler(f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
 		if dt == -1:
 			dt = (T-t0)/float(n)
