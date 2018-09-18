@@ -20,13 +20,11 @@ class MainClass:
 
 	def run(self):
 		
-		problem = ProblemClass(y0=(1+math.sqrt(0.001)), t0=0, t=4, n=4, Eh=0.0005)
+		problem = ProblemClass(y0=(1+math.sqrt(0.001)), t0=0, t=4, n=4, Eh=0.0001)
 
 		t, y, n, h = os.solver(os, problem, os.ForwardEuler, problem.f4, problem.exactf4)
-		# print(t)
-		# print(y)
 		print(n,h)
-		self.plot(t, y, problem.exactf4, "Solution of Q4 using forward Euler method h = " + str(h) + "   n = " + str(n))
+		self.plot(t, y, problem.exactf4(t), "Solution of Q4 using forward Euler method h = " + str(h) + "   n = " + str(n))
 
 if __name__ == "__main__":
 	MainClass().run()
