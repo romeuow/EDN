@@ -9,8 +9,11 @@ class ProblemClass:
 		self.n = n
 		self.Eh = Eh
 
-	def exactf4(self, t, eps=0.001):
-		return (1 + np.sqrt(t+eps))
+	def f2(self, t, y):
+		return (2*y)/t + (np.power(t,2)*np.exp(t))
+	
+	def exactf2(self, t):
+		return t*t*(np.exp(t) - np.exp(1))
 
 	def f4(self, t, y):
 		return 1/(2*y-2)
@@ -20,3 +23,6 @@ class ProblemClass:
 
 	def ddf4(self, t, y):
 		return 8/((2*y-2)**3)
+	
+	def exactf4(self, t, eps=0.001):
+		return 1 + np.sqrt(t+eps)
