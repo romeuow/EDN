@@ -1,5 +1,7 @@
 import math
+import numpy as np
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
 from Problem import ProblemClass
 from OneStep import OneStepClass as os
 
@@ -21,17 +23,26 @@ class MainClass:
 	def run(self):		
 
 
-		#Questão 2b da lista
+		#Questão 2b
 		problem = ProblemClass(y0=0, t0=1, t=2, n=4, Eh=0.5)
 		t, y = os.ForwardEuler(f=problem.f2, t0=problem.t0, y0=problem.y0, T=problem.t, dt=0.2)
 		t1, y1, n, h = os.solver(os, problem, os.ForwardEuler, problem.f2, problem.exactf2)
-		self.plot(t, y, t1, problem.exactf2(t1))
+		# self.plot(t, y, t1, problem.exactf2(t1))
 
-		#Questão 2c da lista
+		#Questão 2c
 		t, y = os.ForwardEuler(f=problem.f2, t0=problem.t0, y0=problem.y0, T=problem.t, dt=0.1)
-		self.plot(t, y, t1, problem.exactf2(t1))		
+		# self.plot(t, y, t1, problem.exactf2(t1))
 
-		# #Questão 4 da lista
+		#Questão 2d
+		interFunction = interp1d(t, problem.exactf2(t))
+		y_t = interFunction(1.97)
+		print(y_t)
+		print(problem.exactf2(1.97))
+
+		#Questão 2e
+		
+		
+		# #Questão 4
 		# problem = ProblemClass(y0=(1+math.sqrt(0.001)), t0=0, t=4, n=4, Eh=0.75)
 
 		# #Forward Euler
