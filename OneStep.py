@@ -5,20 +5,20 @@ import math
 
 class OneStepClass:
 
-	def solver(self, problem, method, f, exact):
-		if not callable(method):
-			raise TypeError('method is %s, not a function' % type(method))
-		if not callable(f):
-			raise TypeError('f is %s, not a function' % type(f))
-		if not callable(exact):
-			raise TypeError('exact is %s, not a function' % type(exact))
+	def solver(self, problem, method, f, exact, dy=None, dyy=None):
 		
-		t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
+		if dy is not None:
+			t, y = method(f, problem.t0, problem.y0, problem.t, dy, dyy, problem.n)
+		else:
+			t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
 		yExact = exact(t)
 
 		while np.max(abs(yExact - y)) > problem.Eh:
 			problem.n *= 2
-			t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
+			if dy is not None:
+				t, y = method(f, problem.t0, problem.y0, problem.t, dy, dyy, problem.n)
+			else:
+				t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
 			yExact = exact(t)
 
 		h = float((problem.t-problem.t0)/problem.n)
@@ -52,7 +52,7 @@ class OneStepClass:
 		t[0] = t0
 		for k in range(n):
 			t[k+1] = t[k] + dt
-			y[k+1] = y[k] + (dt/2)*(f(t[k], y[k]) + f(t[k+1], y[k] + h*f(t[k],y[k])))
+			y[k+1] = y[k] + (dt/2)*(f(t[k], y[k]) + f(t[k+1], y[k] + dt*f(t[k],y[k])))
 		return t, y
 
 	def PontoMedio(f, t0, y0, T, n=1, dt=-1):
@@ -71,7 +71,7 @@ class OneStepClass:
 		return t, y
   
   
-	def Taylor(f, dy, dyy, t0, y0, T, n=1, dt=-1):
+	def Taylor(f, t0, y0, T, dy, dyy, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
 		if dt == -1:
 			dt = (T-t0)/float(n)

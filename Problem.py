@@ -16,7 +16,7 @@ class ProblemClass:
 		return 1/(2*y-2)
 	
 	def df4(self, t, y):
-		return -2/np.pow(2*y-2,2)
+		return -2/((2*y-2)**2)
 
 	def ddf4(self, t, y):
-		return 8/np.pow(2*y-2, 3)
+		return 8/((2*y-2)**3)

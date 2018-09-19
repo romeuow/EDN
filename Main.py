@@ -18,13 +18,30 @@ class MainClass:
 		plt.ylabel('y', fontsize=16)
 		plt.show()
 
-	def run(self):
-		
-		problem = ProblemClass(y0=(1+math.sqrt(0.001)), t0=0, t=4, n=4, Eh=0.0001)
+	def run(self):		
 
+		#Questão 4 da lista
+		problem = ProblemClass(y0=(1+math.sqrt(0.001)), t0=0, t=4, n=4, Eh=0.75)
+
+		#Forward Euler
 		t, y, n, h = os.solver(os, problem, os.ForwardEuler, problem.f4, problem.exactf4)
-		print(n,h)
-		self.plot(t, y, problem.exactf4(t), "Solution of Q4 using forward Euler method h = " + str(h) + "   n = " + str(n))
+		self.plot(t, y, problem.exactf4(t), "Solution of Q4 using forward Euler method h = " + str(h) + "  n = " + str(n))
+
+		#Heun
+		t, y, n, h = os.solver(os, problem, os.Heun , problem.f4, problem.exactf4)
+		self.plot(t, y, problem.exactf4(t), "Solution of Q4 using Heun method h = " + str(h) + "  n = " + str(n))
+
+		#Ponto Medio
+		t, y, n, h = os.solver(os, problem, os.PontoMedio , problem.f4, problem.exactf4)
+		self.plot(t, y, problem.exactf4(t), "Solution of Q4 using midpoint method h = " + str(h) + "  n = " + str(n))
+
+		#Taylor
+		t, y, n, h = os.solver(os, problem, os.Taylor , problem.f4, problem.exactf4, problem.df4, problem.ddf4)
+		self.plot(t, y, problem.exactf4(t), "Solution of Q4 using Taylor method h = " + str(h) + "  n = " + str(n))
+
+		#RK4
+		t, y, n, h = os.solver(os, problem, os.Heun , problem.f4, problem.exactf4)
+		self.plot(t, y, problem.exactf4(t), "Solution of Q4 using Runge-Kutta method h = " + str(h) + "  n = " + str(n))
 
 if __name__ == "__main__":
 	MainClass().run()
