@@ -26,3 +26,6 @@ class ProblemClass:
 	
 	def exactf4(self, t, eps=0.001):
 		return 1 + np.sqrt(t+eps)
+
+	def miniH(self, h):
+		return abs(h*98.01/2 + 0.000000005/h)

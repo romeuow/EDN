@@ -2,7 +2,6 @@ import sys
 import numpy as np
 import math
 
-
 class OneStepClass:
 
 	def solver(self, problem, method, f, exact, dy=None, dyy=None):
@@ -112,7 +111,7 @@ class OneStepClass:
 			_k1 = f(t[k],y[k])
 			_k2 = f(t[k] + (dt/2), y[k] + ((dt/2)*_k1))
 			_k3 = f(t[k] + (dt/2), y[k] + ((dt/2)*_k2))
-			_k4 = f(t[k+1], y[k] + _k3)
+			_k4 = f(t[k+1], y[k] + (dt*_k3))
 			
 			y[k+1] = y[k] + (dt/6)*(_k1+ 2*_k2 + 2*_k3 + _k4)
 		return t, y
