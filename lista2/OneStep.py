@@ -24,7 +24,7 @@ class OneStepClass:
 		return t, y, problem.n, h		
 
 
-	def ForwardEuler(f, t0, y0, T, n=1, dt=-1):
+	def ForwardEuler(self, f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
 		if dt == -1:
 			dt = (T-t0)/float(n)
@@ -39,7 +39,7 @@ class OneStepClass:
 			y[k+1] = y[k] + dt*f(t[k], y[k])
 		return t, y
 
-	def Heun(f, t0, y0, T, n=1, dt=-1):
+	def Heun(self, f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
 		if dt == -1:
 			dt = (T-t0)/float(n)
@@ -54,7 +54,7 @@ class OneStepClass:
 			y[k+1] = y[k] + (dt/2)*(f(t[k], y[k]) + f(t[k+1], y[k] + dt*f(t[k],y[k])))
 		return t, y
 
-	def PontoMedio(f, t0, y0, T, n=1, dt=-1):
+	def PontoMedio(self, f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
 		if dt == -1:
 			dt = (T-t0)/float(n)
@@ -70,7 +70,7 @@ class OneStepClass:
 		return t, y
   
   
-	def Taylor(f, t0, y0, T, dy, dyy, n=1, dt=-1):
+	def Taylor(self, f, t0, y0, T, dy, dyy, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
 		if dt == -1:
 			dt = (T-t0)/float(n)
@@ -95,7 +95,7 @@ class OneStepClass:
 			
 		return t, y
   
-	def RK4(f, t0, y0, T, n=1, dt=-1):
+	def RK4(self, f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
 		if dt == -1:
 			dt = (T-t0)/float(n)
