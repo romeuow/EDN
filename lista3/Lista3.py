@@ -11,10 +11,11 @@ class Lista3Class:
 	def run(self):
 		ms = MultiStepClass()		
 		pl = PlotClass()
-		problem = ProblemClass(y0=(1+math.sqrt(0.001)), t0=0, t=4, n=4, Eh=0.00002)
-
+		problem = ProblemClass(y0=(1+math.sqrt(0.001)), t0=0, t=4, n=4, Eh=0.1)
 		t, y, n, h = ms.solver(problem, ms.AdamsBM4)
-		pl.plot(t, y, t, problem.exactf4(t))
+		problem.Eh = 0.00005
+		t1, y1, n, h = ms.solver(problem, ms.AdamsBM4)
+		pl.plot(t, y, t1, problem.exactf4(t1))
 		
 
 if __name__ == "__main__":

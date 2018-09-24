@@ -37,6 +37,8 @@ class MultiStepClass:
 		for k in range(3, n):
 			t[k+1] = t[k] + dt
 			p[k+1] = y[k] + (dt/24) * ((55*f(t[k],y[k]))-(59*f(t[k-1],y[k-1]))+(37*f(t[k-2],y[k-2]))-(9 *f(t[k-3],y[k-3])))
-			y[k+1] = y[k] + (dt/24) * ((9*f(t[k+1],p[k+1]))+(19*f(t[k],y[k]))-(5*f(t[k-1],y[k-1]))+(f(t[k-2],y[k-2])))
+			c_1 = y[k] + (dt/24) * ((9*f(t[k+1],p[k+1]))+(19*f(t[k],y[k]))-(5*f(t[k-1],y[k-1]))+(f(t[k-2],y[k-2])))
+			c_2 = y[k] + (dt/24) * ((9*f(t[k+1],c_1))+(19*f(t[k],y[k]))-(5*f(t[k-1],y[k-1]))+(f(t[k-2],y[k-2])))
+			y[k+1] = c_2
 
 		return t, y
