@@ -3,22 +3,22 @@ import numpy as np
 class MultiStepClass:
 
 	def solver(self, problem, method):
-		
+		a = 0
 		n = problem.n
-		t, y = method(problem.f4, problem, n)
+		a, t, y = method(problem.f4, problem, n)
 		yExact = problem.exactf4(t)
 
 		while np.max(abs(yExact - y)) > problem.Eh:
 			n *= 2
-			t, y = method(problem.f4, problem, n)
+			b, t, y = method(problem.f4, problem, n)
 			yExact = problem.exactf4(t)
-
+			a += b
 		h = float((problem.t-problem.t0)/n)
 		
-		return t, y, n, h
+		return np.max(abs(yExact - y)), a, t, y, n, h
 
 	def AdamsBM4(self, f, problem, n):
-
+		b = 0 
 		dt = (problem.t-problem.t0)/float(n)
 
 		t = np.zeros(n+1)
@@ -40,5 +40,6 @@ class MultiStepClass:
 			c_1 = y[k] + (dt/24) * ((9*f(t[k+1],p[k+1]))+(19*f(t[k],y[k]))-(5*f(t[k-1],y[k-1]))+(f(t[k-2],y[k-2])))
 			c_2 = y[k] + (dt/24) * ((9*f(t[k+1],c_1))+(19*f(t[k],y[k]))-(5*f(t[k-1],y[k-1]))+(f(t[k-2],y[k-2])))
 			y[k+1] = c_2
+			b += 6
 
-		return t, y
+		return b, t, y

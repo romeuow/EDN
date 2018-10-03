@@ -5,27 +5,29 @@ import math
 class OneStepClass:
 
 	def solver(self, problem, method, f, exact, dy=None, dyy=None):
-		
+		a = 0
 		if dy is not None:
-			t, y = method(f, problem.t0, problem.y0, problem.t, dy, dyy, problem.n)
+			a, t, y = method(f, problem.t0, problem.y0, problem.t, dy, dyy, problem.n)
 		else:
-			t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
+			a, t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
 		yExact = exact(t)
 
 		while np.max(abs(yExact - y)) > problem.Eh:
 			problem.n *= 2
 			if dy is not None:
-				t, y = method(f, problem.t0, problem.y0, problem.t, dy, dyy, problem.n)
+				b, t, y = method(f, problem.t0, problem.y0, problem.t, dy, dyy, problem.n)
 			else:
-				t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
+				b, t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
+			a += b
 			yExact = exact(t)
 
 		h = float((problem.t-problem.t0)/problem.n)
-		return t, y, problem.n, h		
+		return np.max(abs(yExact - y)), a, t, y, problem.n, h		
 
 
 	def ForwardEuler(self, f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
+		b = 0
 		if dt == -1:
 			dt = (T-t0)/float(n)
 		else:
@@ -37,10 +39,12 @@ class OneStepClass:
 		for k in range(n):
 			t[k+1] = t[k] + dt
 			y[k+1] = y[k] + dt*f(t[k], y[k])
-		return t, y
+			b += 1
+		return b, t, y
 
 	def Heun(self, f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
+		b = 0
 		if dt == -1:
 			dt = (T-t0)/float(n)
 		else:
@@ -52,10 +56,12 @@ class OneStepClass:
 		for k in range(n):
 			t[k+1] = t[k] + dt
 			y[k+1] = y[k] + (dt/2)*(f(t[k], y[k]) + f(t[k+1], y[k] + dt*f(t[k],y[k])))
-		return t, y
+			b += 2
+		return b, t, y
 
 	def PontoMedio(self, f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
+		b = 0
 		if dt == -1:
 			dt = (T-t0)/float(n)
 		else:
@@ -67,11 +73,13 @@ class OneStepClass:
 		for k in range(n):
 			t[k+1] = t[k] + dt
 			y[k+1] = y[k] + dt*f(t[k]+(dt/2), y[k]+(dt/2)*f(t[k],y[k]))
-		return t, y
+			b += 2
+		return b, t, y
   
   
 	def Taylor(self, f, t0, y0, T, dy, dyy, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
+		b = 0
 		if dt == -1:
 			dt = (T-t0)/float(n)
 		else:
@@ -92,11 +100,13 @@ class OneStepClass:
 			a3 = ((dt**3)/6) * ((ddfk * (fk**2)) + ((dfk**2) * fk))
 			
 			y[k+1] = y[k] + a1 + a2 + a3
+			b += 1
 			
-		return t, y
+		return b, t, y
   
 	def RK4(self, f, t0, y0, T, n=1, dt=-1):
 		"""Solve y'=f(t,y), y(0)=y0, with n steps until t=T."""
+		b = 0
 		if dt == -1:
 			dt = (T-t0)/float(n)
 		else:
@@ -114,4 +124,6 @@ class OneStepClass:
 			_k4 = f(t[k+1], y[k] + (dt*_k3))
 			
 			y[k+1] = y[k] + (dt/6)*(_k1+ 2*_k2 + 2*_k3 + _k4)
-		return t, y
+			b += 4
+
+		return b, t, y
