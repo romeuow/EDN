@@ -14,7 +14,7 @@ class ProblemClass:
 	# y' = v(t)
 	# v' = -b(v)v(t)-y(t)
 	def function(self, t, yv, b):
-		return yv[1] , (-b(yv[0])*yv[1] - yv[0])
+		return yv[1] , (-b(yv[1])*yv[1] - yv[0])
 
 	# v⁴
 	def b1(self, v):
