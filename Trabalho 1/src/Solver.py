@@ -11,8 +11,8 @@ class SolverClass:
 		errorSize = problem.n+1
 		while yPrevious is None or np.max(abs(yPrevious[:,0:errorSize] - yv[:,0:errorSize])) > problem.Eh :
 			problem.n *= 2
-			t, yv = self.RK4(problem, b)
 			yPrevious = yv
+			t, yv = self.RK4(problem, b)
 			
 		return t, yv
 		

@@ -6,7 +6,7 @@ class Tp1Class:
 
 	def run(self):
 		solver = SolverClass()
-		problem = ProblemClass(y0=0, v0=5, t0=0, t=50, n=100, Eh=0.01)
+		problem = ProblemClass(y0=1, v0=1, t0=0, t=50, n=25, Eh=0.05)
 		ptl = PlotClass()
 
 		t, yv = solver.solve(problem, problem.b3)
