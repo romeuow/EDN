@@ -11,6 +11,9 @@ class ProblemClass:
 
 	def f2(self, t, y):
 		return (2*y)/t + (np.power(t,2)*np.exp(t))
+
+	def fT1(self, t, y):
+		return -y**5 - y
 	
 	def exactf2(self, t):
 		return t*t*(np.exp(t) - np.exp(1))

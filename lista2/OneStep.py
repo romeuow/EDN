@@ -22,7 +22,29 @@ class OneStepClass:
 			yExact = exact(t)
 
 		h = float((problem.t-problem.t0)/problem.n)
-		return np.max(abs(yExact - y)), a, t, y, problem.n, h		
+		return np.max(abs(yExact - y)), a, t, y, problem.n, h
+
+	def solverWithoutSolution(self, problem, method, f, dy=None, dyy=None):
+		
+		yPrevious = None
+		a = 0
+		if dy is not None:
+			a, t, y = method(f, problem.t0, problem.y0, problem.t, dy, dyy, problem.n)
+		else:
+			a, t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
+		
+		while yPrevious is None or np.max(abs(yPrevious - y)) > problem.Eh :
+			problem.n *= 2
+			if dy is not None:
+				b, t, y = method(f, problem.t0, problem.y0, problem.t, dy, dyy, problem.n)
+			else:
+				b, t, y = method(f, problem.t0, problem.y0, problem.t, problem.n)
+			a += b
+			yPrevious = y
+		
+		h = float((problem.t-problem.t0)/problem.n)
+		return np.max(abs(yPrevious - y)), a, t, y, problem.n, h
+
 
 
 	def ForwardEuler(self, f, t0, y0, T, n=1, dt=-1):

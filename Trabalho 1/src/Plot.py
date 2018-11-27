@@ -7,7 +7,7 @@ class PlotClass:
 		plt.xlabel('y(t)', fontsize=16)
 		plt.ylabel('v(t)', fontsize=16)
 		l1 = plt.plot(y,v)
-		plt.setp(l1, linewidth=1, color='b', linestyle='-')  # line1 is thick and red
+		plt.setp(l1, linewidth=1, color='b', linestyle='-')
 		if title:
 			fig.suptitle(title, fontsize=20)
 		plt.draw()
@@ -20,7 +20,7 @@ class PlotClass:
 		ax.spines['bottom'].set_position('zero')
 		ax.spines['top'].set_color('none')
 		l1 = plt.plot(t,y)
-		plt.setp(l1, linewidth=0.5, color='red', linestyle='-')  # line1 is thick and red
+		plt.setp(l1, linewidth=0.5, color='red', linestyle='-')
 		if title:
 			fig.suptitle(title, fontsize=20)
 		plt.xlabel('t', fontsize=16)
