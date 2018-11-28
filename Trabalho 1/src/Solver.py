@@ -7,14 +7,14 @@ class SolverClass:
 		n = problem.n
 		total_e, t, yv = method(problem, b, n)
 		yPrevious = None
-		errorSize = problem.n+1
-		while yPrevious is None or np.max(abs(yPrevious[:,0:errorSize] - yv[:,0:errorSize])) > problem.Eh :
-			n *= 2
-			yPrevious = yv
-			# t, yv = self.RK4(problem, b, n)
+
+		# Condição de convergência (parada)
+		while yPrevious is None or np.max(np.abs(yPrevious - yv)) > problem.Eh :
+			yPrevious = np.pad(yv, ((0,0),(0,5*n)), mode='constant', constant_values=0)
+			n *= 6
 			e, t, yv = method(problem, b, n)
 			total_e += e
-
+			print(np.max(np.abs(yPrevious - yv)))
 		return total_e, t, yv
 
 
