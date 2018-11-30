@@ -15,7 +15,8 @@ class SolverClass:
 			e, t, yv = method(problem, b, n)
 			total_e += e
 			print(np.max(np.abs(yPrevious - yv)))
-		return total_e, t, yv
+		max_error = np.max(np.abs(yPrevious - yv))
+		return max_error, total_e, t, yv
 
 
 	def ForwardEuler(self, problem, b, n):
