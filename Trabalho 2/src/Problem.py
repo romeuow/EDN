@@ -9,31 +9,32 @@ class ProblemClass:
 		self.lbda = lbda
 		self.M = M
 		self.T = 0.5
-		
+
+	def fx1(self, x):
+		return (4/np.pi)*(x - (np.pi/4))
+
+	def fx2(self, x):
+		return (4/np.pi)*((3*np.pi/4) - x)
+
 	def f_initial_conditions(self, x):
 		if (x >= np.pi/4) and (x <= np.pi/2):
-			return (4/np.pi)*(x - (np.pi/4))
+			return self.fx1(x)
 		elif (x > np.pi/2) and (x <= 3*np.pi/4):
-			return (4/np.pi)*((3*np.pi/4) - x)
+			return self.fx2(x)
 		else:
 			return 0		
 
 	def exact_solution(self, x, t):
 
 		def integrand(x, a, n):
-
-			if (a >= np.pi/4) and (a <= np.pi/2):
-				return (4/np.pi)*(x - (np.pi/4))*np.sin(n*np.pi/self.L*x)
-			else:
-				return (4/np.pi)*((3*np.pi/4) - x)*np.sin(n*np.pi/self.L*x)
+			return self.f_initial_conditions(a) * np.sin((n*np.pi/self.L)*x)
 
 		exact = 0
-		for n in range(1,3)
+		for n in range(5):
 			bn = 2/self.L*integrate.quad(integrand, np.pi/4, np.pi/2, args=(np.pi/2, n))[0] + integrate.quad(integrand, np.pi/2, 3*np.pi/4, args=(3*np.pi/4, n))[0]
-			exact += bn * (np.exp(-(n*np.pi/self.L)**2))*problem.k*t*np.sin(n*np.pi/self.L*x)
-		exact += 
+			exact += bn * (np.exp((-1)*(n*np.pi/self.L)**2*self.k*t)) * np.sin((n*np.pi/self.L)*x)
 
-		print(bn)
+		return exact
 
 
 	def N(self):
