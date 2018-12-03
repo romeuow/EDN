@@ -9,6 +9,8 @@ class ProblemClass:
 		self.lbda = lbda
 		self.M = M
 		self.T = 0.5
+		self.n_fourier = 5
+		self.N = self.N()
 
 	def fx1(self, x):
 		return (4/np.pi)*(x - (np.pi/4))
@@ -22,7 +24,7 @@ class ProblemClass:
 		elif (x > np.pi/2) and (x <= 3*np.pi/4):
 			return self.fx2(x)
 		else:
-			return 0		
+			return 0
 
 	def exact_solution(self, x, t):
 
@@ -30,13 +32,11 @@ class ProblemClass:
 			return self.f_initial_conditions(a) * np.sin((n*np.pi/self.L)*x)
 
 		exact = 0
-		for n in range(5):
+		for n in range(self.n_fourier):
 			bn = 2/self.L*integrate.quad(integrand, np.pi/4, np.pi/2, args=(np.pi/2, n))[0] + integrate.quad(integrand, np.pi/2, 3*np.pi/4, args=(3*np.pi/4, n))[0]
 			exact += bn * (np.exp((-1)*(n*np.pi/self.L)**2*self.k*t)) * np.sin((n*np.pi/self.L)*x)
 
 		return exact
 
-
 	def N(self):
 		return int(np.ceil(self.T * self.k * (self.M ** 2) * (1 / (self.lbda * (self.L ** 2)))))
-

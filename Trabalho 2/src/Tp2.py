@@ -14,9 +14,9 @@ class Tp2Class:
 		solver = SolverClass()
 		problem = ProblemClass(lbda=0.5, M=14)
 
-		# v = solver.solve(problem, solver.ForwardEuler)
-		# u = solver.solve(problem, solver.BackwardEuler)
-		exact, y = solver.solve(problem, solver.CrankNicolson)
+		error1, e1,	v = solver.solve(problem, solver.ForwardEuler)
+		error2, e2,	u = solver.solve(problem, solver.BackwardEuler)
+		error3, e3, y = solver.solve(problem, solver.CrankNicolson)
 		
 		style.use('fivethirtyeight')
 	
@@ -24,7 +24,7 @@ class Tp2Class:
 
 		def init():
 			plt.clf()
-			
+
 		def animate(i):
 			h = problem.L/(problem.M-1)
 			x=0
@@ -33,15 +33,14 @@ class Tp2Class:
 				x+=h
 				dx.append(x)
 
-			# plt.plot(dx,v[i],'yo')
-			# plt.plot(dx,u[i],'go')
+			plt.plot(dx,v[i],'yo')
+			plt.plot(dx,u[i],'go')
 			plt.plot(dx,y[i],'bo')
-			plt.plot(dx,exact[i], 'rx')
+			plt.plot(dx,e1[i], 'rx')
 
-		ani = FuncAnimation(fig, animate, problem.N(), init_func=init, interval=100)
+		ani = FuncAnimation(fig, animate, problem.N, init_func=init, interval=100)
+		print(error1,error2,error3)
 		plt.show()
-
-		
 
 if __name__ == "__main__":	
 	Tp2Class().run()
