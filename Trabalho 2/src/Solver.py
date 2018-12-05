@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.sparse import diags
-from scipy. linalg import lu_factor, lu_solve
+from scipy.linalg import lu_factor, lu_solve
 
 class SolverClass:
 
@@ -16,7 +16,7 @@ class SolverClass:
 		h = problem.L/(problem.M-1)
 		x = 0
 		for j in range(problem.M):
-			v[0][j] = problem.f_initial_conditions(x)
+			v[0][j] =	 problem.f_initial_conditions(x)
 			x += h
 		
 		# Definindo a matriz tri diagonal (λ, 1-2λ, λ)
@@ -30,7 +30,8 @@ class SolverClass:
 			v[i+1,1:-1] = aux[1:-1]
 			error[i+1,:] = np.abs(v[i+1,:] - exact[i+1,:])
 		# print('\n\n', np.flipud(v))
-		return np.max(error[-1,:]), exact, v
+		print(np.max(error[-1,:]))
+		return error, exact, v
 
 	def BackwardEuler(self, problem):
 		exact = np.zeros((problem.N, problem.M))
@@ -57,8 +58,8 @@ class SolverClass:
 
 			
 		# print('\n\n', np.flipud(v))
-
-		return np.max(error[-1,:]), exact, v
+		print(np.max(error[-1,:]))
+		return error, exact, v
 
 	def CrankNicolson(self, problem):
 		v = np.zeros((problem.N, problem.M))
@@ -91,8 +92,5 @@ class SolverClass:
 				x += h
 			error[i+1,:] = np.abs(v[i+1,:] - exact[i+1,:])
 
-		print(v)
-		print(exact)
-		print(error)
-
-		return np.max(error[-1,:]), exact, v
+		print(np.max(error[-1,:]))
+		return error, exact, v
