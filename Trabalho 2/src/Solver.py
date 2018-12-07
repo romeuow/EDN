@@ -30,8 +30,7 @@ class SolverClass:
 			v[i+1,1:-1] = aux[1:-1]
 			error[i+1,:] = np.abs(v[i+1,:] - exact[i+1,:])
 		# print('\n\n', np.flipud(v))
-		print(np.max(error[-1,:]))
-		return error, exact, v
+		return np.max(error[-1,:]), exact, v
 
 	def BackwardEuler(self, problem):
 		exact = np.zeros((problem.N, problem.M))
@@ -58,8 +57,7 @@ class SolverClass:
 
 			
 		# print('\n\n', np.flipud(v))
-		print(np.max(error[-1,:]))
-		return error, exact, v
+		return np.max(error[-1,:]), exact, v
 
 	def CrankNicolson(self, problem):
 		v = np.zeros((problem.N, problem.M))
@@ -92,5 +90,4 @@ class SolverClass:
 				x += h
 			error[i+1,:] = np.abs(v[i+1,:] - exact[i+1,:])
 
-		print(np.max(error[-1,:]))
-		return error, exact, v
+		return np.max(error[-1,:]), exact, v

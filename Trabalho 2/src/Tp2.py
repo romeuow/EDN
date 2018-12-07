@@ -10,7 +10,7 @@ from Problem import ProblemClass
 class Tp2Class:
 	def run(self):
 
-		np.set_printoptions(precision=0.5, suppress=True)
+		np.set_printoptions(precision=3, suppress=True)
 
 		solver = SolverClass()
 		problem = ProblemClass(lbda=1, M=14)
@@ -18,7 +18,6 @@ class Tp2Class:
 		error1, e1,	v = solver.solve(problem, solver.ForwardEuler)
 		error2, e2,	u = solver.solve(problem, solver.BackwardEuler)
 		error3, e3, y = solver.solve(problem, solver.CrankNicolson)
-		print('Aqui')
 		
 		style.use('fivethirtyeight')
 
@@ -34,39 +33,57 @@ class Tp2Class:
 
 		X, Y = np.meshgrid(X, Y)
 		
+		fig1 = plt.figure()
 		fig2 = plt.figure()
-		ax = fig2.gca(projection='3d')
+		fig3 = plt.figure()
 
-		surf = ax.plot_surface(X, Y, v, linewidth=0, cmap=cm.coolwarm, antialiased=False)
-		ax.set_xlabel('Space')
-		ax.set_ylabel('Time')
-		ax.set_zlabel('u')
-		plt.tight_layout()
-		plt.show(block=False)
+		ax1 = fig1.gca(projection='3d')
+		ax2 = fig2.gca(projection='3d')
+		ax3 = fig3.gca(projection='3d')
 
+		ax1.set_title('F.Euler')
+		ax1.set_xlabel('Space')
+		ax1.set_ylabel('Time')
+		ax1.set_zlabel('u')
 
-		fig = plt.figure()
+		ax2.set_title('B.Euler')
+		ax2.set_xlabel('Space')
+		ax2.set_ylabel('Time')
+		ax2.set_zlabel('u')
 
-		def init():
-			plt.clf()
+		ax3.set_title('Crank Nicolson')
+		ax3.set_xlabel('Space')
+		ax3.set_ylabel('Time')
+		ax3.set_zlabel('u')
 
-		def animate(i):
-			h = problem.L/(problem.M-1)
-			x=0
-			dx = [x]
-			for j in range(problem.M-1):
-				x+=h
-				dx.append(x)
-
-			plt.plot(dx,v[i],'yo')
-			plt.plot(dx,u[i],'go')
-			plt.plot(dx,y[i],'bo')
-			plt.plot(dx,e1[i], 'rx')
-			
-
-		ani = FuncAnimation(fig, animate, problem.N, init_func=init, interval=100)
+		ax1.plot_surface(X, Y, v, linewidth=0, cmap=cm.coolwarm, antialiased=False)
+		ax2.plot_surface(X, Y, u, linewidth=0, cmap=cm.coolwarm, antialiased=False)
+		ax3.plot_surface(X, Y, y, linewidth=0, cmap=cm.coolwarm, antialiased=False)
 		print(error1,error2,error3)
 		plt.show()
+
+
+		# Animaçãos
+		# fig = plt.figure()
+
+		# def init():
+		# 	plt.clf()
+
+		# def animate(i):
+		# 	h = problem.L/(problem.M-1)
+		# 	x=0
+		# 	dx = [x]
+		# 	for j in range(problem.M-1):
+		# 		x+=h
+		# 		dx.append(x)
+
+		# 	plt.plot(dx,v[i],'yo')
+		# 	plt.plot(dx,u[i],'go')
+		# 	plt.plot(dx,y[i],'bo')
+		# 	plt.plot(dx,e1[i], 'rx')
+			
+
+		# ani = FuncAnimation(fig, animate, problem.N, init_func=init, interval=100)
 
 if __name__ == "__main__":	
 	Tp2Class().run()
