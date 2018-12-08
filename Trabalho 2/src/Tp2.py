@@ -63,7 +63,7 @@ class Tp2Class:
 		plt.show()
 
 
-		# Animaçãos
+		# Animação
 		# fig = plt.figure()
 
 		# def init():
